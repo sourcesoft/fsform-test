@@ -1,26 +1,69 @@
 import React from 'react';
-import logo from './logo.svg';
+import ExampleWrapper from './ExampleWrapper';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import fsform from 'fsform';
+import {
+  Provider,
+  PersistGate,
+  App,
+  Form,
+  FieldShortAnswer,
+} from 'fsform/lib/react';
+import control from 'fsform/lib/control';
+
+console.log(fsform);
+
+// Full control
+const state = control();
+
+class Main extends React.Component {
+  componentDidMount() {
+    // Bootstrap helper
+    // fsform.render(document.getElementById('fsform-container'));
+  }
+  handleSubmit = () => {
+    state.submit();
+  };
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <ExampleWrapper>
+            <div>First usage:</div>
+            <Provider store={state.store}>
+              <PersistGate loading={null} persistor={state.persistor}>
+                <App formId={34245}>
+                  <Form />
+                </App>
+                <App formId={224}>
+                  <Form />
+                </App>
+              </PersistGate>
+            </Provider>
+          </ExampleWrapper>
+
+          <ExampleWrapper>
+            <div>Second usage:</div>
+            <Provider store={state.store}>
+              <PersistGate loading={null} persistor={state.persistor}>
+                <App formId={412}>
+                  <div>Printing only one field</div>
+                  <FieldShortAnswer />
+                  <input type="submit" onClick={this.handleSubmit} />
+                </App>
+              </PersistGate>
+            </Provider>
+          </ExampleWrapper>
+
+          <ExampleWrapper>
+            <div>Third usage:</div>
+            <div id="fsform-container" />
+          </ExampleWrapper>
+        </header>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default Main;
